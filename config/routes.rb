@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :users, only: [:show, :create] do 
         resources :addresses, only: [:show, :create]
         resources :subscriptions, only: [:show, :create]
+        resources :cancel_subscriptions, only: [:update]
       end 
     end 
   end
