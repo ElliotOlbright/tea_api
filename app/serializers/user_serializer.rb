@@ -8,4 +8,8 @@ class UserSerializer
   attribute :addresses do |object|
     object.addresses
   end
+
+  attribute :subscriptions do |object|
+    object.subscriptions
+  end
 end
