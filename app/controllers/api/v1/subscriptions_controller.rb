@@ -1,5 +1,12 @@
 class Api::V1::SubscriptionsController < ApplicationController
 
+  def index 
+    user = User.find(params[:user_id])
+
+    subscriptions = user.subscriptions
+    render json: SubscriptionSerializer.new(subscriptions)
+  end 
+
   def show 
     user = User.find_by(id: subscription_params[:user_id].to_i)
     subscription = user.subscriptions
