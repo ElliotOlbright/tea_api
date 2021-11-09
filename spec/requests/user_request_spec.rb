@@ -28,6 +28,12 @@ RSpec.describe 'users API' do
     expect(user_info[:data][:type]).to eq("user")
     expect(user_info[:data]).to have_key(:attributes)
     expect(user_info[:data][:attributes]).to be_a(Hash)
-    expect(user_info[:data][:attributes].keys.count).to eq(3)
+    expect(user_info[:data][:attributes].keys.count).to eq(4)
+    expect(user_info[:data][:attributes]).to have_key(:first_name)
+    expect(user_info[:data][:attributes][:first_name]).to be_a(String)
+    expect(user_info[:data][:attributes]).to have_key(:last_name)
+    expect(user_info[:data][:attributes][:last_name]).to be_a(String)
+    expect(user_info[:data][:attributes]).to have_key(:email)
+    expect(user_info[:data][:attributes][:email]).to be_a(String)
   end 
 end 

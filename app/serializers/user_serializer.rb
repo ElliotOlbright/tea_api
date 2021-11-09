@@ -5,7 +5,7 @@ class UserSerializer
              :first_name,
              :last_name
 
-  # attribute :film_epks do |object|
-  #   UserFilmEpkSerializer.new(object.film_epks)
-  # end
+  attribute :addresses do |object|
+    object.addresses
+  end
 end
