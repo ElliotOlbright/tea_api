@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do 
       resources :users, only: [:show, :create] do 
         resources :addresses, only: [:show, :create]
-        resources :subscriptions, only: [:show, :create]
+        resources :subscriptions, only: [:show, :create, :index]
         resources :cancel_subscriptions, only: [:update]
         resources :active_subscriptions, only: [:index]
         resources :archive_subscriptions, only: [:index]
