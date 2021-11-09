@@ -6,6 +6,8 @@ Rails.application.routes.draw do
         resources :addresses, only: [:show, :create]
         resources :subscriptions, only: [:show, :create]
         resources :cancel_subscriptions, only: [:update]
+        resources :active_subscriptions, only: [:index]
+        resources :archive_subscriptions, only: [:index]
       end 
     end 
   end
