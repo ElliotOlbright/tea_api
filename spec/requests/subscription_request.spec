@@ -22,6 +22,19 @@ RSpec.describe 'Subscriptions API' do
       price: 10000,
       frequency: 1
     )
+
+    @subscription2 = @user.subscriptions.create!(
+      title: "Raspberry Habiscus",
+      price: 150000,
+      frequency: 1
+    )
+
+    @subscription3 = @user.subscriptions.create!(
+      title: "Raspberry Habiscus",
+      price: 150000,
+      frequency: 1, 
+      status: 1
+    )
   end
 
   it 'can return a users subscriptions' do 
@@ -33,7 +46,7 @@ RSpec.describe 'Subscriptions API' do
     subscription = JSON.parse(response.body, symbolize_names: true)
 
     expect(subscription).to have_key(:data)
-    expect(subscription[:data].count).to eq(1)
+    expect(subscription[:data].count).to eq(3)
     expect(subscription[:data][0]).to have_key(:id)
     expect(subscription[:data][0][:id]).to be_a(String)
     expect(subscription[:data][0]).to have_key(:type)
@@ -48,7 +61,7 @@ RSpec.describe 'Subscriptions API' do
     expect(subscription[:data][0][:attributes]).to have_key(:status)
     expect(subscription[:data][0][:attributes][:status]).to be_a(String)
     expect(subscription[:data][0][:attributes]).to have_key(:frequency)
-    expect(subscription[:data][0][:attributes][:frequency]).to be_a(Integer)
+    expect(subscription[:data][0][:attributes][:frequency]).to be_a(String)
   end 
 
   it 'can create a users subscription' do 
@@ -80,6 +93,56 @@ RSpec.describe 'Subscriptions API' do
     expect(subscription[:data][:attributes]).to have_key(:status)
     expect(subscription[:data][:attributes][:status]).to be_a(String)
     expect(subscription[:data][:attributes]).to have_key(:frequency)
-    expect(subscription[:data][:attributes][:frequency]).to be_a(Integer)
+    expect(subscription[:data][:attributes][:frequency]).to be_a(String)
+  end 
+
+  it 'return active only subscriptions' do 
+    get "/api/v1/users/#{@user.id}/active_subscriptions"
+
+    expect(response).to be_successful
+    expect(response.status).to eq (200)
+
+    active_subscriptions = JSON.parse(response.body, symbolize_names: true)
+
+    expect(active_subscriptions).to have_key(:data)
+    expect(active_subscriptions[:data]).to be_an(Array)
+    expect(active_subscriptions[:data][0].keys.count).to eq(3)
+    expect(active_subscriptions[:data][1].keys.count).to eq(3)
+    expect(active_subscriptions[:data][0][:attributes]).to have_key(:title)
+    expect(active_subscriptions[:data][0][:attributes][:title]).to be_a(String)
+    expect(active_subscriptions[:data][0][:attributes]).to have_key(:price)
+    expect(active_subscriptions[:data][0][:attributes][:price]).to be_a(Integer)
+    expect(active_subscriptions[:data][0][:attributes]).to have_key(:status)
+    expect(active_subscriptions[:data][0][:attributes][:status]).to be_a(String)
+    expect(active_subscriptions[:data][0][:attributes]).to have_key(:frequency)
+    expect(active_subscriptions[:data][0][:attributes][:frequency]).to be_a(String)
+    expect(active_subscriptions[:data][1][:attributes]).to have_key(:title)
+    expect(active_subscriptions[:data][1][:attributes][:title]).to be_a(String)
+    expect(active_subscriptions[:data][1][:attributes]).to have_key(:price)
+    expect(active_subscriptions[:data][1][:attributes][:price]).to be_a(Integer)
+    expect(active_subscriptions[:data][1][:attributes]).to have_key(:status)
+    expect(active_subscriptions[:data][1][:attributes][:status]).to be_a(String)
+    expect(active_subscriptions[:data][1][:attributes]).to have_key(:frequency)
+    expect(active_subscriptions[:data][1][:attributes][:frequency]).to be_a(String)
+  end 
+
+  it 'return archive only subscriptions' do 
+    get "/api/v1/users/#{@user.id}/archive_subscriptions"
+
+    expect(response).to be_successful
+    expect(response.status).to eq (200)
+
+    archive_subscriptions = JSON.parse(response.body, symbolize_names: true)
+    expect(archive_subscriptions).to have_key(:data)
+    expect(archive_subscriptions[:data]).to be_an(Array)
+    expect(archive_subscriptions[:data][0].keys.count).to eq(3)
+    expect(archive_subscriptions[:data][0][:attributes]).to have_key(:title)
+    expect(archive_subscriptions[:data][0][:attributes][:title]).to be_a(String)
+    expect(archive_subscriptions[:data][0][:attributes]).to have_key(:price)
+    expect(archive_subscriptions[:data][0][:attributes][:price]).to be_a(Integer)
+    expect(archive_subscriptions[:data][0][:attributes]).to have_key(:status)
+    expect(archive_subscriptions[:data][0][:attributes][:status]).to be_a(String)
+    expect(archive_subscriptions[:data][0][:attributes]).to have_key(:frequency)
+    expect(archive_subscriptions[:data][0][:attributes][:frequency]).to be_a(String)
   end 
 end
